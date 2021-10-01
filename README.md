@@ -171,7 +171,7 @@ python detect.py
 ```
 你可以从`78`行指定图片路径，默认将读取`./curve/test.jpg`，推理效果如下
 
-<center><img src="https://ai-studio-static-online.cdn.bcebos.com/98750cebde9f470e83462ac2fcbcefcf63a7bf569b2e4946912485d02ac32f19" width="600"/><img src="https://ai-studio-static-online.cdn.bcebos.com/52dcf289e44341ae834be0bee1b9e92ca8d76fdb2b294840b2e8ad2c7ffc8317" width="600"/></center>
+<center><img src="https://user-images.githubusercontent.com/49911294/135650095-cbce862b-02e0-460a-9e67-95256fa75414.jpg" width="600"/><img src="https://user-images.githubusercontent.com/49911294/135650100-49646c2f-6109-4d30-b9f0-2df80bc7d5c6.jpg" width="600"/></center>
 
 # **关于作者**
 <img src="https://ai-studio-static-online.cdn.bcebos.com/cb9a1e29b78b43699f04bde668d4fc534aa68085ba324f3fbcb414f099b5a042" width="100"/>
