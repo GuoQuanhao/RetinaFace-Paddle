@@ -83,9 +83,9 @@ python evaluation.py
 
 **在没有复杂后处理的情况下，PaddlePaddle训练结果均高于其余框架**
 
-**根据论文的MAP精度测试协议，
+**根据论文的mAP精度测试协议，**
 `we also make use of the development server (Hard validation subset) of the WIDER Face
-Challenge 2018 [33], which employs a more strict evaluation metric of mean AP (mAP) for IoU=0.5:0.05:0.95, rewarding more accurate face detectors.`，我在repo中更新了`evaluate.py `新增了`mAP`测试协议，只需要注释或做如下替换：
+Challenge 2018 [33], which employs a more strict evaluation metric of mean AP (mAP) for IoU=0.5:0.05:0.95, rewarding more accurate face detectors.`，**我在repo中更新了`evaluate.py `新增了`mAP`测试协议，只需要注释或做如下替换：**
 
 ```python
 if __name__ == '__main__':
