@@ -270,6 +270,60 @@ def evaluation(pred, gt_path, iou_thresh=0.5):
     print("=================================================")
 
 
+def evaluation_mAP(pred, gt_path, iou_thresh_list=np.arange(0.5,1.00,0.05)):
+    pred = get_preds(pred)
+    norm_score(pred)
+    facebox_list, event_list, file_list, hard_gt_list, medium_gt_list, easy_gt_list = get_gt_boxes(gt_path)
+    event_num = len(event_list)
+    thresh_num = 1000
+    aps = []
+    for iou_thresh in iou_thresh_list:
+        print('iou_thresh={:.2f}'.format(iou_thresh))
+        # different setting
+        gt_list = hard_gt_list
+        count_face = 0
+        pr_curve = np.zeros((thresh_num, 2)).astype('float')
+        # [hard, medium, easy]
+        pbar = tqdm.tqdm(range(event_num))
+        for i in pbar:
+            pbar.set_description('Processing {}'.format('hard'))
+            event_name = str(event_list[i][0][0])
+            img_list = file_list[i][0]
+            pred_list = pred[event_name]
+            sub_gt_list = gt_list[i][0]
+            gt_bbx_list = facebox_list[i][0]
+
+            for j in range(len(img_list)):
+                pred_info = pred_list[str(img_list[j][0][0])]
+
+                gt_boxes = gt_bbx_list[j][0].astype('float')
+                keep_index = sub_gt_list[j][0]
+                count_face += len(keep_index)
+
+                if len(gt_boxes) == 0 or len(pred_info) == 0:
+                    continue
+                ignore = np.zeros(gt_boxes.shape[0])
+                if len(keep_index) != 0:
+                    ignore[keep_index-1] = 1
+                pred_recall, proposal_list = image_eval(pred_info, gt_boxes, ignore, iou_thresh)
+
+                _img_pr_info = img_pr_info(thresh_num, pred_info, proposal_list, pred_recall)
+
+                pr_curve += _img_pr_info
+        pr_curve = dataset_pr_info(thresh_num, pr_curve, count_face)
+
+        propose = pr_curve[:, 0]
+        recall = pr_curve[:, 1]
+
+        ap = voc_ap(recall, propose)
+        aps.append(ap)
+        print("==================== Results ====================")
+        print("Hard   Val AP: {}".format(aps[-1]))
+        print("=================================================")
+
+    print("==================== Results ====================")
+    print("mAP: {}".format(np.mean(aps)))
+    print("=================================================")
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
@@ -277,7 +331,8 @@ if __name__ == '__main__':
     parser.add_argument('-g', '--gt', default='/Users/Vic/Downloads/eval_tools/ground_truth/')
 
     args = parser.parse_args()
-    evaluation(args.pred, args.gt)
+    # evaluation(args.pred, args.gt)
+    evaluation_mAP(args.pred, args.gt)
 
 
 
